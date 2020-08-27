@@ -33,7 +33,7 @@ app.get('/api/user/auth',auth,(req,res)=>{
 
 
 app.get('/',(req,res)=>{
-    res.json({"hello":"hello"})
+    res.json({"hello":"hello!!"})
 })
 
 app.post('/api/users/register',(req,res)=>{
