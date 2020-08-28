@@ -1,4 +1,5 @@
 const express = require('express');
+const proxy = require('http-proxy-middleware')
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.get('/api/user/auth',auth,(req,res)=>{
+app.get('/api/users/auth',auth,(req,res)=>{
     //로그인된 유저만 파일(?)을 업로드할 수 있게 하는 middleware?
     res.status(200).json({
         _id: req._id,
@@ -69,7 +70,7 @@ app.post('/api/users/login',(req,res) => {
 
 })
 
-app.get('/api/user/logout',auth,(req,res)=>{
+app.get('/api/users/logout',auth,(req,res)=>{
     User.findOneAndUpdate({_id:req.user.id}, {token: ""},(err,doc)=>{
         if(err) return res.json({success: false, err})
         return res.status(200).send({
