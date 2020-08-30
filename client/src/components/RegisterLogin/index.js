@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import { withRouter} from "react-router-dom";
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/user_actions'
 import { Link } from 'react-router-dom'
+// import { Formik } from 'formik';
 
 
 
@@ -17,15 +19,16 @@ class RegisterLogin extends Component {
   handleChange = event=>{
       this.setState({[event.target.name]:event.target.value})
   }
+
   submitForm = event=>{
       event.preventDefault();
 
-      let dataToSubmit={
-          email:this.state.email,
-          name:this.state.name,
-          password:this.state.password,
-          lastname:this.state.lastname,
-          passwordConfirmation: this.state.passwordConfirmation
+      let dataToSubmit = {
+        email: this.state.email,
+        password: this.state.password,
+        name: this.state.name,
+        lastname: this.state.lastname,
+        passwordConfirmation: this.state.passwordConfirmation
       };
 
       if(this.isFormvalid(this.state)){
@@ -35,12 +38,17 @@ class RegisterLogin extends Component {
             if(response.payload.loginSuccess){
               this.props.history.push('/')
             } else{
-              this.setState({errors:this.state.errors.concat(
+              this.setState({
+                errors:this.state.errors.concat(
                 "Failed to login"
               )
             })
             }
           })
+      } else {
+        this.setState({
+          errors: this.state.errors.concat("invalid form")
+        })
       }
   }
 
@@ -53,7 +61,7 @@ class RegisterLogin extends Component {
             <div>Login</div>
           </h2>
           <div className="row">
-            <form className="col 12">
+            <form className="col 12" onSubmit={event => this.submitForm(event)}>
               <div className="row">
                 <div className="input-field col s12">
                   <input
@@ -102,7 +110,7 @@ class RegisterLogin extends Component {
                     className="btn waves-effect red lighten-2"
                     type="submit"
                     name="action"
-                    onClick={this.submitForm}
+                    onClick={event => this.submitForm(event)}
                   >
                     LOG IN
                   </button>
@@ -132,4 +140,4 @@ function mapStateToProps(state){
         user:state.user
     }
 }
-export default connect(mapStateToProps) (RegisterLogin);
+export default connect(mapStateToProps)(withRouter(RegisterLogin));

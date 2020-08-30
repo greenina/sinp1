@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/user_actions'
 
-export class Register extends Component{
+class Register extends Component{
 
     state={
         lastname:"",
@@ -13,7 +13,7 @@ export class Register extends Component{
         errors:[]
     };
     displayErrors = errors =>
-        errors.map((error, i) => <p key={i}>{error}</p>)
+        errors.map((error, i) => <p key={i}>{error.message}</p>)
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value })
@@ -25,10 +25,12 @@ export class Register extends Component{
 
         if (this.isFormEmpty(this.state)){
             error = {message:"Fill in all the fields"};
-            this.setState({errors:errors.concat(error )})
+            this.setState({errors:errors.concat(error )}) 
+            return false;
         } else if(!this.isPasswordValid(this.state)){
             error = { message: " Password is invalid"}
-            this.setState({errors: errors.concat(error)})  
+            this.setState({errors: errors.concat(error)})
+            return false;  
         } else{
             return true;
         } 
@@ -44,7 +46,7 @@ export class Register extends Component{
             return true;
         }
     }
-    isFormEmpty = ({ lastname, name, email, password, passwordConfirmation }) =>{
+    isFormEmpty = ({ name, lastname, email, password, passwordConfirmation }) =>{
         return (
             !name.length ||  
             !lastname.length ||
@@ -64,10 +66,11 @@ export class Register extends Component{
             password:this.state.password,
             passwordConfirmation:this.state.passwordConfirmation
         }
-        console.log(dataToSubmit);
+        
 
         if(this.isFormValid()){
             this.setState({errors: [] })
+            console.log(dataToSubmit);
             this.props.dispatch(registerUser(dataToSubmit))
             .then(response => {
                 console.log(response);
@@ -99,13 +102,13 @@ export class Register extends Component{
                         <div>Sign Up</div>
                     </h2>
                     <div className="row">
-                        <form className="col 12">
+                        <form className="col 12" onSubmit={event => this.submitForm(event)}>
                             <div className="row">
                                 <div className="input-field col s12">
                                     <input
                                         name="lastname"
                                         value={this.state.lastname}
-                                        onChange={(e) => this.handleChange(e)}
+                                        onChange={e => this.handleChange(e)}
                                         id="lastname"
                                         type="text"
                                         className="validate"
@@ -124,12 +127,12 @@ export class Register extends Component{
                                     <input
                                         name="name"
                                         value={this.state.name}
-                                        onChange={(e) => this.handleChange(e)}
+                                        onChange={e => this.handleChange(e)}
                                         id="name"
                                         type="text"
                                         className="validate"
                                     />
-                                    <label className="active" htmlFor="password">name</label>
+                                    <label className="active" htmlFor="name">name</label>
                                     <span
                                         className="helper-test"
                                         data-error="Wrong password"
@@ -143,12 +146,12 @@ export class Register extends Component{
                                     <input
                                         name="email"
                                         value={this.state.email}
-                                        onChange={(e) => this.handleChange(e)}
+                                        onChange={e => this.handleChange(e)}
                                         id="email"
                                         type="text"
                                         className="validate"
                                     />
-                                    <label className="active" htmlFor="password">email</label>
+                                    <label className="active" htmlFor="email">email</label>
                                     <span
                                         className="helper-test"
                                         data-error="Wrong password"
@@ -162,7 +165,7 @@ export class Register extends Component{
                                     <input
                                         name="password"
                                         value={this.state.password}
-                                        onChange={(e) => this.handleChange(e)}
+                                        onChange={e => this.handleChange(e)}
                                         id="password"
                                         type="password"
                                         className="validate"
@@ -176,7 +179,7 @@ export class Register extends Component{
                                     <input
                                         name="passwordConfirmation"
                                         value={this.state.passwordConfirmation}
-                                        onChange={(e) => this.handleChange(e)}
+                                        onChange={e => this.handleChange(e)}
                                         id="passwordconFirmation"
                                         type="password"
                                         className="validate"
@@ -195,9 +198,9 @@ export class Register extends Component{
                                         className="btn waves-effect red lighten-2"
                                         type="submit"
                                         name="action"
-                                        onClick={this.submitForm}
+                                        onClick={event => this.submitForm(event)}
                                     >
-                                        LOG IN
+                                        회원가입
                                     </button>
 
                                     
