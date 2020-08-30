@@ -12,7 +12,7 @@ const { User } = require('./models/user');
 const { auth } = require('./middleware/auth')
 
 const mongoose = require('mongoose');
-const connect = mongoose.connect(
+mongoose.connect(
   config.mongoURI,
   { useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex:true, useFindAndModify:false })
   .then(() => console.log('DB connected'))
@@ -24,7 +24,6 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/api/users', require('./routes/users'))
 
 
 app.get('/api/users/auth',auth,(req,res)=>{
@@ -44,55 +43,55 @@ app.get('/',(req,res)=>{
     res.json({"hello":"hello!!"})
 })
 
-// app.post('/api/users/register',(req,res)=>{
-//     const user = new User(req.body);
+app.post('/api/users/register',(req,res)=>{
+    const user = new User(req.body);
 
-//     user.save((err, doc) => {
-//         if(err) return res.json({success:false, err});
-//         res.status(200).json({ 
-//             success: true, 
-//             userData: doc 
-//         })
-//     })   
-// })
+    user.save((err, doc) => {
+        if(err) return res.json({success:false, err});
+        res.status(200).json({ 
+            success: true, 
+            userData: doc 
+        })
+    })   
+})
 
 app.use(express.static("client/build"))
 app.get("*",(req,res)=>{
     res.sendFile(path.resolve(__dirname,"client","bulid", "index.html"))
 })
 
-// app.post('/api/users/login',(req,res) => {
+app.post('/api/users/login',(req,res) => {
 
-//     User.findOne({email: req.body.email},(err,user) => {
-//         if(!user) 
-//             return res.json({
-//                 loginSuccess: false,message:"email not found"
-//             })    
-//         user.comparePassword(req.body.password,(err,isMatch)=>{
-//             if(!isMatch){
-//                 return res.json({loginSuccess:false, message:"wrong password"})
-//             }
-//         });
-//         user.generateToken((err,user)=>{
-//             if(err) return res.status(400).send(err);
-//             res.cookie("x_auth",user.token)
-//                 .status(200)
-//                 .json({
-//                 loginSuccess:true
-//                 })
-//         })
-//     });
+    User.findOne({email: req.body.email},(err,user) => {
+        if(!user) 
+            return res.json({
+                loginSuccess: false,message:"email not found"
+            })    
+        user.comparePassword(req.body.password,(err,isMatch)=>{
+            if(!isMatch){
+                return res.json({loginSuccess:false, message:"wrong password"})
+            }
+        });
+        user.generateToken((err,user)=>{
+            if(err) return res.status(400).send(err);
+            res.cookie("x_auth",user.token)
+                .status(200)
+                .json({
+                loginSuccess:true
+                })
+        })
+    });
 
-// })
+})
 
-// app.get('/api/users/logout',auth,(req,res)=>{
-//     User.findOneAndUpdate({_id:req.user.id}, {token: ""},(err,doc)=>{
-//         if(err) return res.json({success: false, err})
-//         return res.status(200).send({
-//             success:true
-//         })
-//     })
-// })
+app.get('/api/users/logout',auth,(req,res)=>{
+    User.findOneAndUpdate({_id:req.user.id}, {token: ""},(err,doc)=>{
+        if(err) return res.json({success: false, err})
+        return res.status(200).send({
+            success:true
+        })
+    })
+})
 
 
 const port = process.env.PORT || 5000

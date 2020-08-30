@@ -3,15 +3,17 @@ import {Route, Switch} from "react-router-dom";
 import About from './about'
 import Login from './RegisterLogin'
 import Register from "./RegisterLogin/register"
+import uploadPage from "./RegisterLogin/uploadPage/uploadPage"
+
 
 function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/about" component={About} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register}
-        />
+        <Route path="/about" component={About} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        {/* <Route path="/uploadPage" component={uploadPage} /> */}
       </Switch>
     </div>
   );
