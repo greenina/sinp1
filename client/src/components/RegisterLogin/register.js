@@ -26,13 +26,14 @@ export class Register extends Component{
         if (this.isFormEmpty(this.state)){
             error = {message:"Fill in all the fields"};
             this.setState({errors:errors.concat(error )})
-        } else if(this.isPasswordValid(this.state)){
+        } else if(!this.isPasswordValid(this.state)){
             error = { message: " Password is invalid"}
             this.setState({errors: errors.concat(error)})  
         } else{
             return true;
         } 
     }
+
 
     isPasswordValid = ( {password, passwordConfirmation}) =>{
         if(password.length < 6 || passwordConfirmation.length < 6){
