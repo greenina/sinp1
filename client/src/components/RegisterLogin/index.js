@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/user_actions'
+import { Link } from 'react-router-dom'
 
 
 
@@ -21,7 +22,10 @@ class RegisterLogin extends Component {
 
       let dataToSubmit={
           email:this.state.email,
-          password:this.state.password
+          name:this.state.name,
+          password:this.state.password,
+          lastname:this.state.lastname,
+          passwordConfirmation: this.state.passwordConfirmation
       };
 
       if(this.isFormvalid(this.state)){
@@ -93,7 +97,7 @@ class RegisterLogin extends Component {
               )}
 
               <div className="row">
-                <div className="col 12">
+                <div className="col s12">
                   <button
                     className="btn waves-effect red lighten-2"
                     type="submit"
@@ -102,7 +106,19 @@ class RegisterLogin extends Component {
                   >
                     LOG IN
                   </button>
+                
+                  <Link to ="/register">
+                    <button
+                      className="btn waves-effect red lighten-2"
+                      type="submit"
+                      name="action"
+                    >
+                      SIGN UP
+                    </button>
+                  </Link>
+                  
                 </div>
+
               </div>
             </form>
           </div>

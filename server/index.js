@@ -42,7 +42,7 @@ app.post('/api/users/register',(req,res)=>{
 
     user.save((err, doc) => {
         if(err) return res.json({success:false, err});
-        return res.status(200).json({ 
+        res.status(200).json({ 
             success: true, 
             userData: doc 
         })
@@ -52,7 +52,10 @@ app.post('/api/users/register',(req,res)=>{
 app.post('/api/users/login',(req,res) => {
 
     User.findOne({email: req.body.email},(err,user) => {
-        if(!user) return res.json({loginSuccess: false,message:"email not found"})    
+        if(!user) 
+            return res.json({
+                loginSuccess: false,message:"email not found"
+            })    
         user.comparePassword(req.body.password,(err,isMatch)=>{
             if(!isMatch){
                 return res.json({loginSuccess:false, message:"wrong password"})

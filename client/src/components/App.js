@@ -10,7 +10,8 @@ function App() {
       <Switch>
         <Route path="/about" component={About} />
         <Route path="/login" component={Login} />
-        <Route path="/login" component={Register} />
+        <Route path="/register" component={Register}
+        />
       </Switch>
     </div>
   );
