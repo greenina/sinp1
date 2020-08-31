@@ -36,7 +36,7 @@ class RegisterLogin extends Component {
           this.props.dispatch(loginUser(dataToSubmit))
           .then(response => {
             if(response.payload.loginSuccess){
-              this.props.history.push('/')
+              this.props.history.push('/uploadPage')
             } else{
               this.setState({
                 errors:this.state.errors.concat(
@@ -58,7 +58,7 @@ class RegisterLogin extends Component {
       <div>
         <div className="container">
           <h2>
-            <div>Login</div>
+            <div>로그인</div>
           </h2>
           <div className="row">
             <form className="col 12" onSubmit={event => this.submitForm(event)}>
@@ -121,7 +121,7 @@ class RegisterLogin extends Component {
                       type="submit"
                       name="action"
                     >
-                      SIGN UP
+                       회원가입
                     </button>
                   </Link>
                   
@@ -140,4 +140,4 @@ function mapStateToProps(state){
         user:state.user
     }
 }
-export default connect(mapStateToProps)(withRouter(RegisterLogin));
+export default connect()(RegisterLogin);

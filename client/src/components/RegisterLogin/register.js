@@ -8,6 +8,7 @@ class Register extends Component{
         lastname:"",
         name:"",
         email:"",
+        department:"",
         password:"",
         passwordConfirmation:"",
         errors:[]
@@ -46,11 +47,12 @@ class Register extends Component{
             return true;
         }
     }
-    isFormEmpty = ({ name, lastname, email, password, passwordConfirmation }) =>{
+    isFormEmpty = ({ name, lastname, email,department, password, passwordConfirmation }) =>{
         return (
             !name.length ||  
             !lastname.length ||
             !email.length ||
+            !department.length||
             !password.length ||
             !passwordConfirmation.length
         )
@@ -63,6 +65,7 @@ class Register extends Component{
             email:this.state.email,
             name: this.state.name,
             lastname:this.state.lastname,
+            department:this.state.department,
             password:this.state.password,
             passwordConfirmation:this.state.passwordConfirmation
         }
@@ -74,20 +77,20 @@ class Register extends Component{
             this.props.dispatch(registerUser(dataToSubmit))
             .then(response => {
                 console.log(response);
-                // if(response.payload.success){
-                //     this.props.history.push('/login')
-                // } else{
-                //     this.setState({
-                //         errors:this.state.errors.concat("your attempt to send data to DB was failed")
-                //     })
+                if(response.payload.success){
+                    this.props.history.push('/login')
+                } else{
+                    this.setState({
+                        errors:this.state.errors.concat("your attempt to send data to DB was failed")
+                    })
 
-                // }
+                }
             })
-            // .catch(err =>{
-            //     this.setState({
-            //         errors:this.state.errors.concat(err)
-            //     })
-            // })
+            .catch(err =>{
+                this.setState({
+                    errors:this.state.errors.concat(err)
+                })
+            })
 
         } else {
             console.error("Form is not valid")
@@ -99,7 +102,7 @@ class Register extends Component{
             <div>
                 <div className="container">
                     <h2>
-                        <div>Sign Up</div>
+                        <div>회원가입</div>
                     </h2>
                     <div className="row">
                         <form className="col 12" onSubmit={event => this.submitForm(event)}>
@@ -152,6 +155,25 @@ class Register extends Component{
                                         className="validate"
                                     />
                                     <label className="active" htmlFor="email">email</label>
+                                    <span
+                                        className="helper-test"
+                                        data-error="Wrong password"
+                                        data-success="right"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <input
+                                        name="department"
+                                        value={this.state.department}
+                                        onChange={e => this.handleChange(e)}
+                                        id="department"
+                                        type="text"
+                                        className="validate"
+                                    />
+                                    <label className="active" htmlFor="department">department</label>
                                     <span
                                         className="helper-test"
                                         data-error="Wrong password"
